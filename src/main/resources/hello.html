@@ -1,0 +1,30 @@
+<html>
+<head>
+    <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+</head>
+<body>
+
+<div>
+
+    Don't hello
+
+</div>
+<div>
+    <input id="clientName">
+    <button onclick="addProduct()">
+        Добавить клиента
+    </button>
+</div>
+</body>
+</html>
+<script>
+    function addProduct() {
+        var clientName = $('#clientName').val();
+        $.ajax({
+            url: "orders/newClient",
+            type: "POST",
+            data: clientName
+        });
+    }
+</script>
+
