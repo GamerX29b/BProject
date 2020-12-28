@@ -1,16 +1,13 @@
 package BrokerClass;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
+import javax.jms.*;
 
+import Entitys.Client;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProductsReseiver {
 
@@ -21,11 +18,18 @@ public class ProductsReseiver {
     // Name of the queue we will receive messages from
     private static String subject = "JCG_QUEUE";
 
-    public static void main(String[] args) throws JMSException {
+    public void takeProduct() {
+
         // Getting JMS connection from the server
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
-        Connection connection = connectionFactory.createConnection();
+        ActiveMQConnectionFactory  connectionFactory = new ActiveMQConnectionFactory(url);
+        connectionFactory.setTrustAllPackages(true);
+        Connection connection;
+
+        try {
+            connection = connectionFactory.createConnection();
+
         connection.start();
+
 
         // Creating session for seding messages
         Session session = connection.createSession(false,
@@ -42,10 +46,14 @@ public class ProductsReseiver {
 
         // We will be using TestMessage in our example. MessageProducer sent us a TextMessage
         // so we must cast to it to get access to its .getText() method.
-        if (message instanceof TextMessage) {
-            TextMessage textMessage = (TextMessage) message;
-            System.out.println("Received message '" + textMessage.getText() + "'");
+        if (message instanceof ObjectMessage) {
+            System.out.println(message);
+            Client client = (Client) message;
+            System.out.println("Received message '" + client.getClientName() + " " + client.getClientAdres() + "'");
         }
         connection.close();
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
     }
 }

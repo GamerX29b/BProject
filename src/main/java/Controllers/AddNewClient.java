@@ -1,5 +1,7 @@
 package Controllers;
 
+import BrokerClass.ProductsReseiver;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,6 +16,8 @@ public class AddNewClient {
         @Path("/newClient")
         public String getOrderById(String orderId) {
             System.out.println(orderId);
+            ProductsReseiver productsReseiver = new ProductsReseiver();
+            productsReseiver.takeProduct();
             return "returning order with id " + orderId;
         }
     }
