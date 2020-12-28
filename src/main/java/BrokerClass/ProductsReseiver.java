@@ -6,50 +6,39 @@ import Entitys.Client;
 import org.apache.activemq.ActiveMQConnection;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+public class ProductsReseiver { //Reseiver это приёмщик!!! Почти как Ресивер!
 
-public class ProductsReseiver {
-
-    // URL of the JMS server
+    // Адрес JMS сервера, пока можно оставить дефолтный ибо пофиг tcp://localhost:61616
     private static String url = ActiveMQConnection.DEFAULT_BROKER_URL;
-    // default broker URL is : tcp://localhost:61616"
 
-    // Name of the queue we will receive messages from
-    private static String subject = "JCG_QUEUE";
+    private static String subject = "BProject";    // Имя, кому принимать данные ClientRes
 
+    /*
+    Получаем сообщение из брокера
+     */
     public void takeProduct() {
 
-        // Getting JMS connection from the server
-        ActiveMQConnectionFactory  connectionFactory = new ActiveMQConnectionFactory(url);
-        connectionFactory.setTrustAllPackages(true);
+        ActiveMQConnectionFactory  connectionFactory = new ActiveMQConnectionFactory(url); // Создание соединения почти как в JDBC
         Connection connection;
 
         try {
             connection = connectionFactory.createConnection();
 
         connection.start();
-
-
-        // Creating session for seding messages
+        //Создание сессии кому отправить сообщение
         Session session = connection.createSession(false,
                 Session.AUTO_ACKNOWLEDGE);
 
-        // Getting the queue 'JCG_QUEUE'
-        Destination destination = session.createQueue(subject);
+        Destination destination = session.createQueue(subject); // отправляем сообщение в 'ClientRes'
 
-        // MessageConsumer is used for receiving (consuming) messages
-        MessageConsumer consumer = session.createConsumer(destination);
+        MessageConsumer consumer = session.createConsumer(destination); // MessageConsumer для получения сообщений
 
-        // Here we receive the message.
-        Message message = consumer.receive();
+        Message message = consumer.receive();         // Тут получаем сообщение
 
-        // We will be using TestMessage in our example. MessageProducer sent us a TextMessage
-        // so we must cast to it to get access to its .getText() method.
-        if (message instanceof ObjectMessage) {
-            System.out.println(message);
-            Client client = (Client) message;
-            System.out.println("Received message '" + client.getClientName() + " " + client.getClientAdres() + "'");
+        if (message instanceof TextMessage) {
+            TextMessage textMessage  = (TextMessage) message;  //Приведение к типу textMessage
+
+            System.out.println("Received message " + textMessage.getText()); //извлечение текста
         }
         connection.close();
         } catch (JMSException e) {
