@@ -10,8 +10,6 @@ import XSDSchema.Product;
 public class BrokerReceiver extends CreateConnection{ //Reseiver это приёмщик!!! Почти как Ресивер!
 
 
-    private static String subject = "BProject";    // Имя, кому принимать данные ClientRes
-
     /**
      * Класс который будет получать класс продукта из брокера
      * @return
@@ -24,7 +22,7 @@ public class BrokerReceiver extends CreateConnection{ //Reseiver это приё
         //Создание сессии кому отправить сообщение
         Session session = connection.createSession(false,
                 Session.AUTO_ACKNOWLEDGE);
-        Destination destination = session.createQueue("BProjectProduct"); // отправляем сообщение в 'ClientRes'
+        Destination destination = session.createQueue("BProjectProduct"); //от кого получеем
         MessageConsumer consumer = session.createConsumer(destination); // MessageConsumer для получения сообщений
         Message message = consumer.receive();         // Тут получаем сообщение
         if (message instanceof TextMessage) {
@@ -49,12 +47,13 @@ public class BrokerReceiver extends CreateConnection{ //Reseiver это приё
             //Создание сессии кому отправить сообщение
             Session session = connection.createSession(false,
                     Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createQueue("BProjectClient"); // отправляем сообщение в 'ClientRes'
+            Destination destination = session.createQueue("BProjectClient");
             MessageConsumer consumer = session.createConsumer(destination); // MessageConsumer для получения сообщений
             Message message = consumer.receive();         // Тут получаем сообщение
             if (message instanceof TextMessage) {
                 TextMessage textMessage  = (TextMessage) message;  //Приведение к типу textMessage
-                client = JAXBConverter.xmlToClient(textMessage.toString());
+                System.out.println(textMessage.getText());
+                client = JAXBConverter.xmlToClient(textMessage.getText());
             }
             connection.close();
         } catch (JMSException e) {
@@ -74,7 +73,7 @@ public class BrokerReceiver extends CreateConnection{ //Reseiver это приё
             //Создание сессии кому отправить сообщение
             Session session = connection.createSession(false,
                     Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createQueue("BProjectOrder"); // отправляем сообщение в 'ClientRes'
+            Destination destination = session.createQueue("BProjectOrder");
             MessageConsumer consumer = session.createConsumer(destination); // MessageConsumer для получения сообщений
             Message message = consumer.receive();         // Тут получаем сообщение
             if (message instanceof TextMessage) {
