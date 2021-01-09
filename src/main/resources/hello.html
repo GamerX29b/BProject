@@ -1,22 +1,99 @@
 <html>
 <head>
     <script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+
+    <style>
+        body {
+            display: block;
+            background-color: aquamarine;
+        }
+        .centralBlock {
+            text-align: center;
+        }
+
+        .popUpTable {
+            min-widthwidth: 300px;
+            min-height: 50px;
+            text-align: center;
+            padding: 15px;
+            border: 3px solid #0000cc;
+            border-radius: 10px;
+            color: #0000cc;
+
+            /*позиционируем и центрируем*/
+            position: absolute;
+            top: 200px;
+            right: 30%;
+            left: 30%;
+            margin: auto;
+        }
+    </style>
 </head>
 <body>
+<div id="generalPage" >
+    <div class="centralBlock">
+        Don't hello
+    </div>
+    <div class="centralBlock">
+        <input id="clientName">
+        <button onclick="addProduct()">
+            Добавить клиента
+        </button>
+    </div>
+    <div class="centralBlock">
+        Найти заказы клиента по ID клиента
+    </div>
+    <div class="centralBlock">
+        <input id="clientId">
+        <button onclick="clientOrders()">
+            Найти
+        </button>
+    </div>
 
-<div>
-
-    Don't hello
-
-</div>
-<div>
-    <input id="clientName">
-    <button onclick="addProduct()">
-        Добавить клиента
-    </button>
+    <!-- Информация о всех заказах-->
+    <div id="clientOrdersPopUp" class="popUpTable" style="display: none">
+        <div id="namePopUp" class="centralBlock">Найденные заказы клиента</div>
+        <div>
+            <div id="idClient"></div>
+            <div id="nameClient"></div>
+        </div>
+        <table id="ordersTable">
+            <thead>
+            <tr>
+                <th>Код заказа</th>
+                <th>Количества товаров</th>
+                <th>Дата заказа</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>1</td>
+                <td>5</td>
+                <td>22.02.12</td>
+            </tr>
+        </table>
+        <button onclick="clientOrdersTableClose()">Закрыть</button>
+    </div>
+    <!-- Информация о заказе-->
+    <div id="productsPopUp" class="popUpTable" style="display: none">
+        <div id="namePopUp" class="centralBlock">Подробности заказа</div>
+        <div id="idClient"></div>
+        <div id="nameClient"></div>
+        <table id="productOrdersTable">
+            <thead>
+            <tr>
+                <th>Код товара</th>
+                <th>Название товара</th>
+                <th>Количество</th>
+            </tr>
+            </thead>
+        </table>
+        <button onclick="resultTableClose()">Закрыть</button>
+    </div>
 </div>
 </body>
-</html>
+
 <script>
     function addProduct() {
         var clientName = $('#clientName').val();
@@ -26,5 +103,46 @@
             data: clientName
         });
     }
+    function clientOrders() {
+        var clientId = $('#clientId').val();
+        $('#clientOrdersPopUp').show();
+        $('#ordersTable').DataTable({
+            "paging":   false,
+            "destroy": true,
+            "ordering": false,
+            "info":     false,
+            "ajax": {
+                "url": "orders/orders",
+                "type": "POST",
+                "data": { length: clientId }
+            },
+            "columns":[
+                {"data": 'id'},
+                {"data": 'quantity'},
+                {"data": 'date'}
+            ]
+        });
+    }
+    function clientProducts() {
+        var clientId = $('#clientId').val();
+        $('#productsPopUp').show();
+        $('#productOrdersTable').DataTable({
+            "paging":   false,
+            "destroy": true,
+            "ordering": false,
+            "info":     false,
+            "ajax": {
+                "url": "orders/product",
+                "type": "POST",
+                "dataSrc": "tableData"
+            }
+        });
+    }
+    function resultTableClose() {
+        $('#productsPopUp').hide();
+    }
+    function clientOrdersTableClose() {
+        $('#clientOrdersPopUp').hide();
+    }
 </script>
-
+</html>
