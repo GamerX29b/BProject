@@ -29,7 +29,7 @@ public class BrokerTransmitter extends CreateConnection{
                     Session.AUTO_ACKNOWLEDGE);
             Destination destination = session.createQueue(subjectClient);
             MessageProducer producer = session.createProducer(destination); // Создаётся некий "режиссёр" сообщения
-            TextMessage message = session.createTextMessage(JAXBConverter.ClientToXml(client)); // Тут то, что мы шлём
+            TextMessage message = session.createTextMessage(JAXBConverter.clientToXml(client)); // Тут то, что мы шлём
             session.createObjectMessage();
             // Here we are sending our message!
             producer.send(message);
