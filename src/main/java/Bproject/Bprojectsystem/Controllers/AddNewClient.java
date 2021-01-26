@@ -1,8 +1,4 @@
-package Controllers;
-
-import BrokerClass.BrokerReceiver;
-import XSDSchema.Client;
-import XSDSchema.Product;
+package Bproject.Bprojectsystem.Controllers;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -28,9 +24,8 @@ public class AddNewClient {
                 e.printStackTrace();
             }
 
-            BrokerReceiver productsReseiver = new BrokerReceiver();
-            Client client = productsReseiver.takeClient();
-            System.out.println(client.getClientName());
+            //Client client = productsReseiver.takeClient();
+            //System.out.println(client.getClientName());
 
             return "returning order with id " + orderId;
         }

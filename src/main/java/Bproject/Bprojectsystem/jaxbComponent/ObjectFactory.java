@@ -6,7 +6,10 @@
 //
 
 
-package XSDSchema;
+package Bproject.Bprojectsystem.jaxbComponent;
+
+import Bproject.Bprojectsystem.Client;
+import Bproject.Bprojectsystem.Product;
 
 import javax.xml.bind.annotation.XmlRegistry;
 
