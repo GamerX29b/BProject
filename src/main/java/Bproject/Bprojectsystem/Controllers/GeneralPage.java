@@ -32,9 +32,7 @@ public class GeneralPage extends HttpServlet {
     @RequestMapping(value = { "/", "/hello" }, method = RequestMethod.GET)
     public String StartedPage(Model model) {
 
-        String message = "Hello Spring Boot + JSP";
-
-        Client client = brokerReceiver.receiveClient();
+       // Client client = brokerReceiver.receiveClient();
 
         return "StartedPage";
     }
