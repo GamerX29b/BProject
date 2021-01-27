@@ -32,8 +32,8 @@ public class BrokerReceiver{ //Reseiver это приёмщик!!! Почти к
      * Класс который будет получать класс продукта из брокера
      * @return
      */
-    @JmsListener(destination = "BProjectProduct")
-    @SendTo("AProjectProduct")
+    @JmsListener(destination = "AProjectProduct")
+    @SendTo("BProjectProduct")
     public Product takeProduct(final Message productMessage) throws JMSException {
         Product product = new Product();
             if (productMessage instanceof TextMessage) {
@@ -46,8 +46,8 @@ public class BrokerReceiver{ //Reseiver это приёмщик!!! Почти к
      * Класс который будет получать класс клиента из брокера
      * @return
      */
-    @JmsListener(destination = "BProjectClient")
-    @SendTo("AProjectClient")
+    @JmsListener(destination = "AProjectClient")
+    @SendTo("BProjectClient")
     public Client takeClient(final Message clientMessage) throws JMSException {
         Client client = new Client();
             if (clientMessage instanceof TextMessage) {
@@ -60,8 +60,8 @@ public class BrokerReceiver{ //Reseiver это приёмщик!!! Почти к
      * Класс который будет получать класс продукта из брокера
      * @return
      */
-    @JmsListener(destination = "BProjectOrder")
-    @SendTo("AProjectOrder")
+    @JmsListener(destination = "AProjectOrder")
+    @SendTo("BProjectOrder")
     public Order takeOrder(final Message orderMessage) throws JMSException {
         Order order = new Order();
             if (orderMessage instanceof TextMessage) {
@@ -69,5 +69,40 @@ public class BrokerReceiver{ //Reseiver это приёмщик!!! Почти к
                 order = jaxbConverter.xmlToOrder(textMessage.getText());
             }
         return order;
+    }
+
+    public Client receiveClient() {
+        Client client = new Client();
+        Message message = jmsTemplate.receive("BProjectClient");
+        TextMessage textMessage = (TextMessage) message;
+        try {
+            client = jaxbConverter.xmlToClient(textMessage.getText());
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+        return client;
+    }
+    public Order receiveOrder () {
+        Order order = new Order();
+        Message message = jmsTemplate.receive("BProjectOrder");
+        TextMessage textMessage = (TextMessage) message;
+        try {
+            order = jaxbConverter.xmlToOrder(textMessage.getText());
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+        return order;
+    }
+
+    public Product receiveProduct () {
+        Product product = new Product();
+        Message message = jmsTemplate.receive("BProjectProduct");
+        TextMessage textMessage = (TextMessage) message;
+        try {
+            product = jaxbConverter.xmlToProduct(textMessage.getText());
+        } catch (JMSException e) {
+            e.printStackTrace();
+        }
+        return product;
     }
 }

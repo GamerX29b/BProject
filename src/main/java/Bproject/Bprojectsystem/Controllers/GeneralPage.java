@@ -3,6 +3,10 @@ package Bproject.Bprojectsystem.Controllers;
 
 
 
+import Bproject.Bprojectsystem.Client;
+import Bproject.Bprojectsystem.brokerClass.BrokerReceiver;
+import Bproject.Bprojectsystem.brokerClass.BrokerTransmitter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,13 +21,20 @@ import java.io.IOException;
 @Controller
 public class GeneralPage extends HttpServlet {
 
+    @Autowired
+    BrokerReceiver brokerReceiver;
+
+    @Autowired
+    public GeneralPage(BrokerReceiver brokerReceiver) {
+        this.brokerReceiver = brokerReceiver;
+    }
 
     @RequestMapping(value = { "/", "/hello" }, method = RequestMethod.GET)
     public String StartedPage(Model model) {
 
         String message = "Hello Spring Boot + JSP";
 
-        //model.addAttribute("message", message);
+        Client client = brokerReceiver.receiveClient();
 
         return "StartedPage";
     }
