@@ -1,4 +1,4 @@
-package Bproject.Bprojectsystem.Controllers;
+package Bproject.Bprojectsystem.сontrollers;
 
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;

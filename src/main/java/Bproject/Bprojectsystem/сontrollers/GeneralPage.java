@@ -1,28 +1,30 @@
-package Bproject.Bprojectsystem.Controllers;
+package Bproject.Bprojectsystem.сontrollers;
 
 
 
 
-import Bproject.Bprojectsystem.Client;
 import Bproject.Bprojectsystem.brokerClass.BrokerReceiver;
-import Bproject.Bprojectsystem.brokerClass.BrokerTransmitter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.ServletException;
+import javax.ejb.EJB;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 @Controller
 public class GeneralPage extends HttpServlet {
 
+    Logger logger = LoggerFactory.getLogger(GeneralPage.class);
+
     @Autowired
     BrokerReceiver brokerReceiver;
+
+    @EJB
+    private PunchBroker ejb;
 
     @Autowired
     public GeneralPage(BrokerReceiver brokerReceiver) {
@@ -34,6 +36,8 @@ public class GeneralPage extends HttpServlet {
 
        // Client client = brokerReceiver.receiveClient();
 
+
         return "StartedPage";
     }
+
 }

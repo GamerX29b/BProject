@@ -1,10 +1,9 @@
-package Bproject.Bprojectsystem.Controllers;
+package Bproject.Bprojectsystem.сontrollers;
 
 
 import Bproject.Bprojectsystem.jaxbComponent.Order;
 import Bproject.Bprojectsystem.Product;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +13,6 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.xml.datatype.XMLGregorianCalendar;
 import java.io.IOException;
 
 import java.io.StringWriter;
@@ -102,7 +100,6 @@ public class dataFromOrders {
         Order order = new Order();
         order.setId(BigInteger.valueOf(3));
         order.setQuantity(BigInteger.valueOf(4));
-        order.setDate();
 
         List<Order> listOrders = new ArrayList<>();
         listOrders.add(order);
