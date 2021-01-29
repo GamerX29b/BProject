@@ -4,6 +4,7 @@ package Bproject.Bprojectsystem.сontrollers;
 
 
 import Bproject.Bprojectsystem.brokerClass.BrokerReceiver;
+import Bproject.Bprojectsystem.ejbClasses.EjbImport.PunchBrokerAnswer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class GeneralPage extends HttpServlet {
     @Autowired
     BrokerReceiver brokerReceiver;
 
-    @EJB
-    private PunchBroker ejb;
+    @EJB(mappedName = "java:global/Aproject-system-1.0/PunchBroker")
+    private PunchBrokerAnswer punchBrokerAnswer;
 
     @Autowired
     public GeneralPage(BrokerReceiver brokerReceiver) {
@@ -34,7 +35,7 @@ public class GeneralPage extends HttpServlet {
     @RequestMapping(value = { "/", "/hello" }, method = RequestMethod.GET)
     public String StartedPage(Model model) {
 
-       // Client client = brokerReceiver.receiveClient();
+        punchBrokerAnswer.getClientById(1);
 
 
         return "StartedPage";
