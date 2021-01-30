@@ -8,8 +8,6 @@
 
 package Bproject.Bprojectsystem.jaxbComponent;
 
-import Bproject.Bprojectsystem.Product;
-
 import javax.xml.bind.annotation.*;
 import javax.xml.datatype.XMLGregorianCalendar;
 import java.math.BigInteger;

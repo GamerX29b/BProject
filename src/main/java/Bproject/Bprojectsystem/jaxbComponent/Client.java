@@ -6,9 +6,7 @@
 //
 
 
-package Bproject.Bprojectsystem;
-
-import Bproject.Bprojectsystem.jaxbComponent.Order;
+package Bproject.Bprojectsystem.jaxbComponent;
 
 import javax.xml.bind.annotation.*;
 import java.math.BigInteger;

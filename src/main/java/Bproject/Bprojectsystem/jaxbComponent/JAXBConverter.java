@@ -1,7 +1,5 @@
 package Bproject.Bprojectsystem.jaxbComponent;
 
-import Bproject.Bprojectsystem.Client;
-import Bproject.Bprojectsystem.Product;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;

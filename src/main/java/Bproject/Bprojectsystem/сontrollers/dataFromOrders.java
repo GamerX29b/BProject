@@ -2,7 +2,7 @@ package Bproject.Bprojectsystem.сontrollers;
 
 
 import Bproject.Bprojectsystem.jaxbComponent.Order;
-import Bproject.Bprojectsystem.Product;
+import Bproject.Bprojectsystem.jaxbComponent.Product;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

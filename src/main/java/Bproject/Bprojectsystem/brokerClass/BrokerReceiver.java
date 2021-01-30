@@ -1,9 +1,9 @@
 package Bproject.Bprojectsystem.brokerClass;
 
-import Bproject.Bprojectsystem.Client;
+import Bproject.Bprojectsystem.jaxbComponent.Client;
 import Bproject.Bprojectsystem.jaxbComponent.JaxbConverterImpl;
 import Bproject.Bprojectsystem.jaxbComponent.Order;
-import Bproject.Bprojectsystem.Product;
+import Bproject.Bprojectsystem.jaxbComponent.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
 import org.springframework.jms.core.JmsTemplate;

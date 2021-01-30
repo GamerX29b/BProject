@@ -6,7 +6,7 @@
 //
 
 
-package Bproject.Bprojectsystem;
+package Bproject.Bprojectsystem.jaxbComponent;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
