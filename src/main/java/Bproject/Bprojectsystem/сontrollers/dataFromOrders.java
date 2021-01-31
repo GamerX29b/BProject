@@ -5,15 +5,13 @@ import Bproject.Bprojectsystem.brokerClass.BrokerReceiver;
 import Bproject.Bprojectsystem.jaxbComponent.Client;
 import Bproject.Bprojectsystem.jaxbComponent.Order;
 import Bproject.Bprojectsystem.jaxbComponent.Product;
+import Bproject.Bprojectsystem.puncherBroker.AsyncCall;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.json.Json;
@@ -39,16 +37,19 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Controller
+@RestController
+@RequestMapping("/orders")
 public class dataFromOrders {
 
     Logger log = Logger.getLogger(dataFromOrders.class.getName());
 
     @Autowired
     BrokerReceiver brokerReceiver;
+    AsyncCall asyncCall;
 
-    public dataFromOrders(BrokerReceiver brokerReceiver) {
+    public dataFromOrders(BrokerReceiver brokerReceiver, AsyncCall asyncCall) {
         this.brokerReceiver = brokerReceiver;
+        this.asyncCall = asyncCall;
     }
 
     /**
@@ -57,20 +58,12 @@ public class dataFromOrders {
      * @return
      */
     @POST
-    @PostMapping("/orders/product")
+    @PostMapping("/product")
     public String getProductById(String productId) {
 
-        final RestTemplate restTemplate = new RestTemplate();
-        int id = 0;
-        try {
-            id = Integer.valueOf(productId.replaceAll("[^0-9]",""));
-            restTemplate.put("http://localhost:8082/Aproject-system-1.0/getProductDataFromClientId", id);
-        } catch (IncompatibleClassChangeError e) {
-            log.log(Level.SEVERE, e.getMessage());
-        }
+        asyncCall.callToOrderDataFromIdThread(productId);
         Order order = brokerReceiver.receiveOrder();
         List<Product> listProduct = order.getProduct();
-        //TODO дописать когда будет готов модуль получения массива из брокера
         StringBuilder readyJson = new StringBuilder();
         for (int i = 0 ; i < listProduct.size() ; i++){
             Product oneProduct = listProduct.get(i);
@@ -96,21 +89,17 @@ public class dataFromOrders {
      * @return
      */
 
-    @PostMapping(value = { "/orders/orders" })
-    public String getOrdersById(@RequestParam(value = "orderId", defaultValue = "0")String orderId) {
+    @POST
+    @PostMapping(value = { "/orders" })
+    public String getOrdersById(@RequestParam(value = "orderId", defaultValue = "0")String orderId) throws InterruptedException {
         final RestTemplate restTemplate = new RestTemplate();
         MultiValueMap<String, String> headers = new HttpHeaders();
         headers.add("id", orderId);
-        try {
-           URL url = new URL("http://localhost:8082/Aproject-system-1.0/getClientDataFromId?id="+orderId);
-           HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
-            log.log(Level.INFO, String.valueOf(urlConnection.getResponseCode()));
-        } catch (IncompatibleClassChangeError | MalformedURLException | ProtocolException e) {
-            log.log(Level.SEVERE, e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println("Вызов потока0");
+        asyncCall.callToClientDataFromIdThread(orderId);
         Client client = new Client();
+        Thread.sleep(10000L);
+        System.out.println("Вне потока");
             client = brokerReceiver.receiveClient();
             List<Order> listOrders = client.getOrder();
             StringBuilder readyJson = new StringBuilder();
